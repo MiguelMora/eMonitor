@@ -9,10 +9,19 @@
     "prettier": "prettier \"**/*.js\" \"**/*.ts\" \"**/*.vue\" --write --ignore-path .gitignore",
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore ."
   },
+  "dependencies": {
+    "@mdi/font": "^7.3.67",
+    "@pinia/nuxt": "^0.4.11",
+    "firebase": "^9.23.0",
+    "pinia": "^2.1.7",
+    "vite-plugin-vuetify": "^1.0.2"
+  },
   "devDependencies": {
+    "@mdi/js": "^5.9.55",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
+    "@vite-pwa/assets-generator": "^0.0.4",
     "@vite-pwa/nuxt": "^0.0.5",
     "@vue/eslint-config-standard": "^8.0.1",
     "eslint": "^8.54.0",
@@ -20,16 +29,11 @@
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.18.1",
-    "nuxt": "^3.8.1"
-  },
-  "dependencies": {
-    "@mdi/font": "^7.3.67",
-    "@pinia/nuxt": "^0.4.11",
-    "firebase": "^9.23.0",
-    "pinia": "^2.1.7",
+    "eslint-plugin-vuetify": "^2.1.0",
+    "nuxt": "^3.8.1",
+    "prettier": "^2.8.8",
     "sass": "^1.69.5",
-    "vite-plugin-vuetify": "^1.0.2",
-    "vuetify": "^3.4.2"
+    "vuetify": "^3.4.0"
   },
   "overrides": {
     "vue": "latest"
