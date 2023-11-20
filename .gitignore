@@ -7,3 +7,6 @@ node_modules
 .env
 dist
 .idea
+/package-lock.json
+/services/config.js
+/.firebaserc
