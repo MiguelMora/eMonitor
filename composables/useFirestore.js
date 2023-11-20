@@ -1,4 +1,5 @@
-import { collection, addDoc, doc, updateDoc } from 'firebase/firestore'
+import { collection, addDoc, doc, setDoc } from 'firebase/firestore'
+import { ref } from 'vue'
 
 import { getDB } from '~/services/fireinit'
 export const useFirestore = () => {
@@ -30,7 +31,7 @@ export const useFirestore = () => {
   }
 
   async function update(id, changes) {
-    await updateDoc(getDocRef(id), changes)
+    await setDoc(getDocRef(id), changes, { merge: true })
   }
 
   return {

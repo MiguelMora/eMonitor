@@ -8,6 +8,7 @@ import {
   emailReset,
   emailVerification,
 } from '~/services/fireinit'
+import { useUserDataStore } from '~/stores/userData'
 
 export const useUserStore = defineStore('user', () => {
   const user = ref(null)
@@ -26,7 +27,7 @@ export const useUserStore = defineStore('user', () => {
   const logged = computed(() => user.value !== null)
   const email = computed(() => (user.value ? user.value.email : ''))
 
-  name = computed(() =>
+  const name = computed(() =>
     user.value
       ? user.value.displayName
         ? user.value.displayName
@@ -63,19 +64,29 @@ export const useUserStore = defineStore('user', () => {
     await _doAction(emailVerification())
   }
 
+  const userDataStore = useUserDataStore()
+  const rol = computed(() => userDataStore.rol)
+
   function initAuth() {
     if (!authInit.value && !useRuntimeConfig().IsServer) {
       // client side only!
       authInit.value = true
+
       setAuthCallback((newUser) => {
-        if (newUser)
+        if (newUser) {
           user.value = {
             displayName: newUser.displayName,
             email: newUser.email,
             uid: newUser.uid,
             emailVerified: newUser.emailVerified,
           }
-        else user.value = null
+          userDataStore.setId(newUser.uid)
+          userDataStore.update({ name: name.value })
+          userDataStore.subscribe()
+        } else {
+          userDataStore.unsubscribe()
+          user.value = null
+        }
       })
     }
     return authInit.value
@@ -99,6 +110,7 @@ export const useUserStore = defineStore('user', () => {
     errorCode,
     uid,
     logged,
+    rol,
     email,
     name,
     setAfterLogin,

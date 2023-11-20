@@ -39,7 +39,7 @@ import { useUserStore } from '@/stores/user'
 
 const store = useUserStore()
 const drawer = ref(false)
-const title = ref('Vue 3 Demo')
+const title = ref('eSalud Monitor')
 const items = ref([
   {
     icon: 'mdi-apps',
@@ -48,12 +48,12 @@ const items = ref([
   },
   {
     icon: 'mdi-chart-bubble',
-    title: 'Inspire',
-    to: '/inspire',
+    title: 'Configuración',
+    to: '/monitors',
   },
   {
     icon: 'mdi-chart-bubble',
-    title: 'Users',
+    title: 'Usuarios',
     to: '/users',
   },
 ])

@@ -9,17 +9,15 @@
       <v-col cols="12">
         <v-card>
           <v-data-table
-            v-model="selected"
             :headers="headers"
             :search="search"
             :items="store.docsArray"
-            :show-select="true"
             class="elevation-1 mb-5"
           >
             <template #top>
-              <v-toolbar flat class="text-white bg-warning">
+              <v-toolbar flat class="text-white bg-amber">
                 <v-toolbar-title class="font-weight-bold"
-                  >Usuarios</v-toolbar-title
+                  >Monitores</v-toolbar-title
                 >
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -38,10 +36,10 @@
             </template>
           </v-data-table>
           <v-card-actions>
-            <v-select v-model="rol" label="Rol" :items="store.roles"></v-select>
-            <v-btn :disabled="selected.length === 0" @click="setRole()">
-              <v-icon size="medium"> {{ mdiAccountMultiplePlus }} </v-icon>
-              Cambiar rol a {{ selected.length }} usuarios
+            <v-text-field v-model="name" label="Nombre"></v-text-field>
+            <v-btn :disabled="!name" @click="addMonitor()">
+              <v-icon size="medium"> {{ mdiPlus }} </v-icon>
+              Añadir monitor
             </v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
@@ -51,29 +49,23 @@
   </v-container>
 </template>
 <script setup>
-import { mdiAccountMultiplePlus, mdiMagnify } from '@mdi/js'
-import { useRoleStore } from '~/stores/role'
+import { mdiAccountMultiplePlus, mdiMagnify, mdiPlus } from '@mdi/js'
+import { useMonitorStore } from '~/stores/monitor'
 
 definePageMeta({
   middleware: 'autenticado',
 })
 
-const store = useRoleStore()
-const selected = ref([])
+const store = useMonitorStore()
 const search = ref('')
-const rol = ref('')
 
-const headers = [
-  { title: 'Usuario', key: 'name', align: 'left' },
-  { title: 'Rol', key: 'rol', align: 'left' },
-]
+const headers = [{ title: 'Nombre', key: 'name', align: 'left' }]
 
-async function setRole() {
-  const newRol = rol.value
-  rol.value = ''
-  for (const id of selected.value) {
-    await store.update(id, { rol: newRol })
-  }
+const name = ref('')
+async function addMonitor() {
+  const newName = name.value
+  name.value = ''
+  await store.add({ name: newName })
 }
 store.subscribe()
 </script>

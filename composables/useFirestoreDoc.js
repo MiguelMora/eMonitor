@@ -1,4 +1,5 @@
 import { onSnapshot } from 'firebase/firestore'
+import { ref } from 'vue'
 
 import { useFirestore } from '~/composables/useFirestore'
 export const useFirestoreDoc = () => {
@@ -80,6 +81,8 @@ export const useFirestoreDoc = () => {
     path,
     listener,
     error,
+    doc,
+    id,
     subscribe,
     unsubscribe,
     clearError,
