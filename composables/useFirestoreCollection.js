@@ -1,17 +1,18 @@
 import {
   onSnapshot,
-  collection,
-  addDoc,
-  doc,
-  updateDoc,
+  where,
+  query,
 } from 'firebase/firestore'
-import { getDB } from '~/services/fireinit'
+import { isEqual } from 'lodash'
+
+import { useFirestore } from '~/composables/useFirestore'
 export const useFirestoreCollection = () => {
-  const path = ref('')
+  const { path, error, clearError, add, setPath, update, getCollection } =
+    useFirestore()
+
+  const filter = ref([])
   const documents = ref({})
   const listener = ref()
-  const error = ref('')
-
   const ids = computed(() => Object.keys(documents.value))
 
   const docsArray = computed(() =>
@@ -22,13 +23,19 @@ export const useFirestoreCollection = () => {
       listener.value()
       listener.value = undefined
       documents.value = {}
-      path.value = ''
-      error.value = ''
+      setPath('')
+      filter.value = []
+      clearError()
     }
   }
-  function getCollection() {
-    return collection(getDB(), path.value)
+
+  function getQuery() {
+    const col = getCollection()
+    if (filter.value.length > 0)
+      return query(col, ...filter.value.map((f) => where(f[0], f[1], f[2])))
+    else return col
   }
+
   function onSnapshotChange(change) {
     const { type, doc } = change
     if (type === 'added' || type === 'modified') {
@@ -38,15 +45,22 @@ export const useFirestoreCollection = () => {
       delete documents.value[doc.id]
     }
   }
-  function subscribe(newPath) {
+
+  /**
+   *
+   * @param newPath collection path
+   * @param newFilter where clause conditions as array of [field, firestore query operator, value] elements
+   */
+  function subscribe(newPath, ...newFilter) {
     // si ha cambiado hay que dejar de escuchar primero
-    if (path.value !== newPath) {
+    if (path.value !== newPath || !isEqual(filter.value, newFilter)) {
       unsubscribe()
       clearError()
-      path.value = newPath
+      setPath(newPath)
+      filter.value = newFilter
       if (newPath) {
         listener.value = onSnapshot(
-          getCollection(),
+          getQuery(),
           (snapshot) => {
             snapshot.docChanges().forEach(onSnapshotChange)
           },
@@ -58,30 +72,10 @@ export const useFirestoreCollection = () => {
       }
     }
   }
-  function clearError() {
-    error.value = ''
-  }
-
-  /**
-   *
-   * @param d document
-   * @returns {Promise<string>} Promise with the id
-   */
-  async function add(d) {
-    const docRef = await addDoc(getCollection(), d)
-    return docRef.id
-  }
-
-  function getDocRef(id) {
-    return doc(getCollection(), id)
-  }
-
-  async function update(id, changes) {
-    await updateDoc(getDocRef(id), changes)
-  }
 
   return {
     path,
+    filter,
     documents,
     listener,
     error,
