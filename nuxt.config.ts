@@ -12,7 +12,7 @@ export default defineNuxtConfig({
       'process.env.DEBUG': false,
     },
   },
-  modules: ['@pinia/nuxt'],
+  modules: ['@pinia/nuxt', '@nuxt/content'],
   ssr: false,
   runtimeConfig: {
     // Override it with environment variables starting with NUXT, _ as separator

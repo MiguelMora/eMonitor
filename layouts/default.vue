@@ -48,7 +48,7 @@ const items = computed(() => {
   const base = [
     {
       icon: 'mdi-apps',
-      title: 'Welcome',
+      title: 'Inicio',
       to: '/',
     },
     {
@@ -59,7 +59,7 @@ const items = computed(() => {
   ]
   const faculty = [
     {
-      icon: 'mdi-chart-bubble',
+      icon: 'mdi-account-multiple',
       title: 'Usuarios',
       to: '/users',
     },
