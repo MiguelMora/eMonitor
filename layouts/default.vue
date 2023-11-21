@@ -51,6 +51,8 @@ const items = computed(() => {
       title: 'Inicio',
       to: '/',
     },
+  ]
+  const users = [
     {
       icon: 'mdi-chart-bubble',
       title: 'Datos',
@@ -64,7 +66,8 @@ const items = computed(() => {
       to: '/users',
     },
   ]
-  if (isFaculty.value) return [...base, ...faculty]
+  if (isFaculty.value) return [...base, ...users, ...faculty]
+  else if (store.rol) return [...base, ...users]
   else return base
 })
 

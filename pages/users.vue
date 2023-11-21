@@ -7,7 +7,7 @@
         type="error"
       ></msg-panel>
       <v-col cols="12">
-        <v-card>
+        <v-card v-if="isFaculty">
           <v-data-table
             v-model="selected"
             :headers="headers"
@@ -46,6 +46,7 @@
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
+        <div v-else>Esta página solo está diponible al personal</div>
       </v-col>
     </v-row>
   </v-container>
@@ -68,6 +69,8 @@ const headers = [
   { title: 'Usuario', key: 'name', align: 'left' },
   { title: 'Rol', key: 'rol', align: 'left' },
 ]
+
+const isFaculty = computed(() => user.rol === 'Admin' || user.rol === 'Faculty')
 
 async function setRole() {
   const newRol = rol.value

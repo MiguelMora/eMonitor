@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row v-if="!!user.rol">
       <msg-panel
         v-model="monitors.error"
         :dismissible="false"
@@ -30,6 +30,10 @@
         ></show-data>
       </v-col>
     </v-row>
+    <div v-else>
+      Para acceder a esta página es necesario que un administrador le de de alta
+      en la aplicación
+    </div>
   </v-container>
 </template>
 <script setup>
