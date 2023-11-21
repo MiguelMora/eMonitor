@@ -12,10 +12,12 @@
   "dependencies": {
     "@mdi/font": "^7.3.67",
     "@pinia/nuxt": "^0.4.11",
+    "chart.js": "^4.2.1",
     "firebase": "^9.23.0",
     "lodash": "^4.17.21",
     "pinia": "^2.1.7",
-    "vite-plugin-vuetify": "^1.0.2"
+    "vite-plugin-vuetify": "^1.0.2",
+    "vue-chartjs": "^5.2.0"
   },
   "devDependencies": {
     "@mdi/js": "^5.9.55",

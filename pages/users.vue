@@ -27,20 +27,20 @@
                   label="Búsqueda"
                   single-line
                   hide-details
+                  append-icon="mdi-magnify"
                 >
-                  <template #append>
-                    <v-icon>
-                      {{ mdiMagnify }}
-                    </v-icon>
-                  </template>
                 </v-text-field>
               </v-toolbar>
             </template>
           </v-data-table>
           <v-card-actions v-if="user.isAdmin">
             <v-select v-model="rol" label="Rol" :items="store.roles"></v-select>
-            <v-btn :disabled="selected.length === 0" @click="setRole()">
-              <v-icon size="medium"> {{ mdiAccountMultiplePlus }} </v-icon>
+            <v-btn
+              :disabled="selected.length === 0"
+              variant="outlined"
+              append-icon="mdi-account-multiple-plus"
+              @click="setRole()"
+            >
               Cambiar rol a {{ selected.length }} usuarios
             </v-btn>
             <v-spacer></v-spacer>
@@ -51,7 +51,6 @@
   </v-container>
 </template>
 <script setup>
-import { mdiAccountMultiplePlus, mdiMagnify } from '@mdi/js'
 import { useRoleStore } from '~/stores/role'
 import { useUserStore } from '~/stores/user'
 
