@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     },
   },
   modules: ['@pinia/nuxt', '@nuxt/content'],
-  ssr: false,
+  // ssr: false, //nuxt content aún no funciona con ssr a false
   runtimeConfig: {
     // Override it with environment variables starting with NUXT, _ as separator
     // except public ones, these variables can only be read from the server
