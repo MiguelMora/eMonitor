@@ -66,7 +66,7 @@ export const useUserStore = defineStore('user', () => {
 
   const userDataStore = useUserDataStore()
   const rol = computed(() => userDataStore.rol)
-
+  const isAdmin = computed(() => rol.value === 'Admin')
   function initAuth() {
     if (!authInit.value && !useRuntimeConfig().IsServer) {
       // client side only!
@@ -111,6 +111,7 @@ export const useUserStore = defineStore('user', () => {
     uid,
     logged,
     rol,
+    isAdmin,
     email,
     name,
     setAfterLogin,

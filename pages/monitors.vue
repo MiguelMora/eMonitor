@@ -2,72 +2,58 @@
   <v-container>
     <v-row>
       <msg-panel
-        v-model="store.error"
+        v-model="monitors.error"
         :dismissible="false"
         type="error"
       ></msg-panel>
       <v-col cols="12">
-        <v-card>
-          <v-data-table
-            :headers="headers"
-            :search="search"
-            :items="store.docsArray"
-            class="elevation-1 mb-5"
-          >
-            <template #top>
-              <v-toolbar flat class="text-white bg-amber">
-                <v-toolbar-title class="font-weight-bold"
-                  >Monitores</v-toolbar-title
-                >
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="search"
-                  label="Búsqueda"
-                  single-line
-                  hide-details
-                >
-                  <template #append>
-                    <v-icon>
-                      {{ mdiMagnify }}
-                    </v-icon>
-                  </template>
-                </v-text-field>
-              </v-toolbar>
-            </template>
-          </v-data-table>
-          <v-card-actions>
-            <v-text-field v-model="name" label="Nombre"></v-text-field>
-            <v-btn :disabled="!name" @click="addMonitor()">
-              <v-icon size="medium"> {{ mdiPlus }} </v-icon>
-              Añadir monitor
-            </v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
+        <monitor-list
+          :items="monitors.docsArray"
+          :is-admin="user.isAdmin"
+          @add="monitors.add"
+        >
+        </monitor-list>
+      </v-col>
+      <v-col v-if="isFaculty" cols="12">
+        <user-chooser
+          :model-value="events.uid"
+          :user-list="roles.docsArray"
+          @update:model-value="events.subscribe"
+        ></user-chooser>
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script setup>
-import { mdiAccountMultiplePlus, mdiMagnify, mdiPlus } from '@mdi/js'
 import { useMonitorStore } from '~/stores/monitor'
+import { useUserStore } from '~/stores/user'
+import { useRoleStore } from '~/stores/role'
+import { useEventStore } from '~/stores/event'
 
 definePageMeta({
   middleware: 'autenticado',
 })
 
-const store = useMonitorStore()
-const search = ref('')
+const monitors = useMonitorStore()
+const user = useUserStore()
+const roles = useRoleStore()
+const isFaculty = computed(() => user.rol === 'Admin' || user.rol === 'Faculty')
+const events = useEventStore()
 
-const headers = [{ title: 'Nombre', key: 'name', align: 'left' }]
+monitors.subscribe()
 
-const name = ref('')
-async function addMonitor() {
-  const newName = name.value
-  name.value = ''
-  await store.add({ name: newName })
-}
-store.subscribe()
+watch(
+  isFaculty,
+  (isFaculty) => {
+    if (isFaculty) {
+      roles.subscribe()
+    } else {
+      roles.unsubscribe()
+      events.subscribe(user.uid)
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped></style>

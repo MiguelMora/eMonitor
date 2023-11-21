@@ -40,23 +40,33 @@ import { useUserStore } from '@/stores/user'
 const store = useUserStore()
 const drawer = ref(false)
 const title = ref('eSalud Monitor')
-const items = ref([
-  {
-    icon: 'mdi-apps',
-    title: 'Welcome',
-    to: '/',
-  },
-  {
-    icon: 'mdi-chart-bubble',
-    title: 'Configuración',
-    to: '/monitors',
-  },
-  {
-    icon: 'mdi-chart-bubble',
-    title: 'Usuarios',
-    to: '/users',
-  },
-])
+const isFaculty = computed(
+  () => store.rol === 'Admin' || store.rol === 'Faculty'
+)
+
+const items = computed(() => {
+  const base = [
+    {
+      icon: 'mdi-apps',
+      title: 'Welcome',
+      to: '/',
+    },
+    {
+      icon: 'mdi-chart-bubble',
+      title: 'Datos',
+      to: '/monitors',
+    },
+  ]
+  const faculty = [
+    {
+      icon: 'mdi-chart-bubble',
+      title: 'Usuarios',
+      to: '/users',
+    },
+  ]
+  if (isFaculty.value) return [...base, ...faculty]
+  else return base
+})
 
 const { logged } = storeToRefs(store)
 

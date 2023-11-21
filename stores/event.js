@@ -15,9 +15,14 @@ export const useEventStore = defineStore('event', () => {
     add,
     update,
   } = useFirestoreCollection()
+  const uid = ref('')
 
-  function subscribe() {
-    subscribeCol('event')
+  function subscribe(userId) {
+    if (uid.value !== userId) {
+      uid.value = userId
+      if (uid.value) subscribeCol('role/' + uid.value + '/event')
+      else unsubscribe()
+    }
   }
 
   return {
@@ -25,6 +30,7 @@ export const useEventStore = defineStore('event', () => {
     documents,
     listener,
     error,
+    uid,
     ids,
     docsArray,
     unsubscribe,

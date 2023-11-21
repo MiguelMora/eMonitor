@@ -37,7 +37,7 @@
               </v-toolbar>
             </template>
           </v-data-table>
-          <v-card-actions>
+          <v-card-actions v-if="user.isAdmin">
             <v-select v-model="rol" label="Rol" :items="store.roles"></v-select>
             <v-btn :disabled="selected.length === 0" @click="setRole()">
               <v-icon size="medium"> {{ mdiAccountMultiplePlus }} </v-icon>
@@ -53,12 +53,14 @@
 <script setup>
 import { mdiAccountMultiplePlus, mdiMagnify } from '@mdi/js'
 import { useRoleStore } from '~/stores/role'
+import { useUserStore } from '~/stores/user'
 
 definePageMeta({
   middleware: 'autenticado',
 })
 
 const store = useRoleStore()
+const user = useUserStore()
 const selected = ref([])
 const search = ref('')
 const rol = ref('')
