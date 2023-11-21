@@ -10,7 +10,7 @@ En el caso del administrador, este puede asignarles un rol (user= usuario normal
 Los datos se pueden ver en [/monitors](/monitors), en dicha página podemos ver la lista de eventos que se pueden monitorizar, seleccionar los que queremos mostrar, para ver su gráfica, o introducir nuevos valores.
 El administrador también podrá crear nuevos tipos de eventos.
 
-Se puede ver una versión online de la aplicación en: [https://esaludmonitor.web.app](https://esaludmonitor.web.app)
+Se puede ver una versión online de la aplicación en: https://esaludmonitor.web.app
 
 ## Pendiente
 
